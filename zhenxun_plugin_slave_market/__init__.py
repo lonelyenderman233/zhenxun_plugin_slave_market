@@ -62,7 +62,7 @@ async def _(bot:Bot, event: GroupMessageEvent):
                 if usern := await GroupInfoUser.get_or_none(user_id=user_.muser_qq, group_id=group_id):
                     user_name1 = usern.user_name
                 umaster = user_name1
-                msg += f"|<img width='20%' src='http://q1.qlogo.cn/g?b=qq&nk={qq}&s=100'/>  {user_name}|{qq}|{p}|<img width='20%' src='http://q1.qlogo.cn/g?b=qq&nk={usern.user_qq}&s=100'/>  {umaster}|\n"
+                msg += f"|<img width='20%' src='http://q1.qlogo.cn/g?b=qq&nk={qq}&s=100'/>  {user_name}|{qq}|{p}|<img width='20%' src='http://q1.qlogo.cn/g?b=qq&nk={usern.user_id}&s=100'/>  {umaster}|\n"
             else:
                 umaster="无"
                 msg += f"|<img width='20%' src='http://q1.qlogo.cn/g?b=qq&nk={qq}&s=100'/>  {user_name}|{qq}|{p}|{umaster}|\n"

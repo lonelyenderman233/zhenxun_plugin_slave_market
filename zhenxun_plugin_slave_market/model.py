@@ -39,15 +39,13 @@ class UsersInfo(Model):
             user = await BayUsers.filter(group_id=group_id,muser_qq=user_qq).exclude(auser_qq = 0).all()
         except Exception as e:
             logger.error(e)
-            pass
             return None
         if user:
             ulist:dict[int, int]={}
             for i in user:
                 auser, _ = await cls.get_or_create(user_qq=i.auser_qq, group_id=group_id)
                 ulist[auser.user_qq]=auser.body_price
-            y2 = {k: v for k, v in sorted(ulist.items(), key=lambda item: item[1], reverse=True)} 
-            return y2
+            return dict(sorted(ulist.items(), key=lambda item: item[1], reverse=True))
         return None
 
     @classmethod
@@ -63,14 +61,10 @@ class UsersInfo(Model):
             user = await cls.filter(group_id=group_id).all()
         except Exception as e:
             logger.error(e)
-            pass
             return None
         if user:
-            ulist:dict[int, int]={}
-            for i in user[:80]:
-                ulist[i.user_qq]=i.body_price
-            y2 = {k: v for k, v in sorted(ulist.items(), key=lambda item: item[1], reverse=True)} 
-            return y2
+            ulist: dict[int, int] = {i.user_qq: i.body_price for i in user[:80]}
+            return dict(sorted(ulist.items(), key=lambda item: item[1], reverse=True))
         return None
 
 
@@ -126,9 +120,8 @@ class UsersInfo(Model):
         user= await BayUsers.get_or_none(group_id=group_id,muser_qq=user_qq,auser_qq=auser_qq)
         if not user:
             return False
-        else:
-            await user.delete()          
-            return True
+        await user.delete()
+        return True
 
 
         

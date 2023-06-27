@@ -171,31 +171,28 @@ async def _(bot:Bot, event: GroupMessageEvent):
         await UsersInfo.work(user_id,group_id)
         gold = random.randint(10, 40)
         m = await UsersInfo.get_or_none(user_qq=user_id, group_id=group_id)
-        gold=gold+ random.randint(m.body_price/10, m.body_price/5)
+        gold += random.randint(m.body_price/10, m.body_price/5)
         await BagUser.add_gold(user_id,group_id,gold)
         u = await BagUser.get_gold(user_id,group_id)
         NICKNAME="【你】"
-        msg=(
-            random.choice(
-                [
-                    f"{NICKNAME}参加了网红主播的不要笑挑战。获得收入{str(gold)}金币",
-                    f"{NICKNAME}在闲鱼上卖东西，获得收入{str(gold)}金币",
-                    f"{NICKNAME}去在大街上发小传单，获得收入{str(gold)}金币",
-                    f"{NICKNAME}参加漫展，帮著名画师毛玉牛乳兜售新作，获得收入{str(gold)}金币",
-                    f"{NICKNAME}在美食街出售鸡你太美飞饼，虽然把饼甩飞了，但是围观群众纷纷购买鸡哥飞饼，获得收入{str(gold)}金币",
-                    f"{NICKNAME}偷渡到美国在中餐馆洗盘子，获得收入{str(gold)}金币",
-                    f"{NICKNAME}去黑煤窑挖煤，获得收入{str(gold)}金币",
-                    f"{NICKNAME}去横店当太君群演，被八路手撕了20次导演才说咔，获得收入{str(gold)}金币",
-                    f"{NICKNAME}去参加银趴服务别人，获得收入{str(gold)}金币",
-                    f"{NICKNAME}去拍摄小电影，获得收入{str(gold)}金币",
-                    f"{NICKNAME}去b站做审核员，看了十二小时旋转鸡块，获得收入{str(gold)}金币",
-                ]
-            )
+        msg = random.choice(
+            [
+                f"{NICKNAME}参加了网红主播的不要笑挑战。获得收入{gold}金币",
+                f"{NICKNAME}在闲鱼上卖东西，获得收入{gold}金币",
+                f"{NICKNAME}去在大街上发小传单，获得收入{gold}金币",
+                f"{NICKNAME}参加漫展，帮著名画师毛玉牛乳兜售新作，获得收入{gold}金币",
+                f"{NICKNAME}在美食街出售鸡你太美飞饼，虽然把饼甩飞了，但是围观群众纷纷购买鸡哥飞饼，获得收入{gold}金币",
+                f"{NICKNAME}偷渡到美国在中餐馆洗盘子，获得收入{gold}金币",
+                f"{NICKNAME}去黑煤窑挖煤，获得收入{gold}金币",
+                f"{NICKNAME}去横店当太君群演，被八路手撕了20次导演才说咔，获得收入{gold}金币",
+                f"{NICKNAME}去参加银趴服务别人，获得收入{gold}金币",
+                f"{NICKNAME}去拍摄小电影，获得收入{gold}金币",
+                f"{NICKNAME}去b站做审核员，看了十二小时旋转鸡块，获得收入{gold}金币",
+            ]
         )
-        msg=msg+f"\n当前共有{u}金币"
+        msg = f"{msg}\n当前共有{u}金币"
         msg="你没有群友只能自己去打工\n"+msg
         output = text_to_png(msg)
-        await work.finish(MessageSegment.image(output), at_sender=True)
     else:
         #派出所有黑奴去干活
         await UsersInfo.work(user_id,group_id)
@@ -204,9 +201,7 @@ async def _(bot:Bot, event: GroupMessageEvent):
         for qq,p in ulist.items():
             if user_ := await GroupInfoUser.get_or_none(user_id=qq, group_id=group_id):
                 NICKNAME = f"【{user_.user_name}】"
-            gold = random.randint(10, 40)
-            gold=gold+ random.randint(p/10, p/5)
-            
+            gold = random.randint(10, 40) + random.randint(p/10, p/5)
             #10%概率没钱
             ran=random.randint(1,10)
             if ran != 6:
@@ -245,10 +240,11 @@ async def _(bot:Bot, event: GroupMessageEvent):
                             f"{NICKNAME}去b站做审核员，要看十二小时旋转鸡块，{NICKNAME}以为没事随便看两眼就给过了，结果被举报中间掺了毛玉牛乳最新画作，一分没挣着被开除了",
                         ]
                     )
-                )                
+                )
             msgs=msgs+msg+"\n"
         await BagUser.add_gold(user_id,group_id,golds)
         u = await BagUser.get_gold(user_id,group_id)
-        msgs=msgs+f"你总共获取{golds}金币，当前共有{u}金币"
+        msgs = f"{msgs}你总共获取{golds}金币，当前共有{u}金币"
         output = text_to_png(msgs)
-        await work.finish(MessageSegment.image(output), at_sender=True)
+
+    await work.finish(MessageSegment.image(output), at_sender=True)
